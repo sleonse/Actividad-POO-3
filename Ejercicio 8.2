@@ -1,0 +1,142 @@
+class Calificaciones:
+  def __init__(self, nota_1, nota_2, nota_3, nota_4, nota_5):
+    self.nota_1 = float(nota_1)
+    self.nota_2 = float(nota_2)
+    self.nota_3 = float(nota_3)
+    self.nota_4 = float(nota_4)
+    self.nota_5 = float(nota_5)
+    self.calificaciones = [self.nota_1, self.nota_2, self.nota_3, self.nota_4, self.nota_5]
+
+  def calcular_promedio(self):
+    promedio = sum(self.calificaciones) / len(self.calificaciones)
+    return promedio
+
+  def calcular_desviacion_estandar(self):
+    suma_cuadrados = 0
+    p = self.calcular_promedio()
+    for i in self.calificaciones:
+      suma_cuadrados += (p - i)**2
+
+    sd = (suma_cuadrados/(len(self.calificaciones) - 1))**0.5
+    return sd
+
+  def calcular_maxima_nota(self):
+    return max(self.calificaciones)
+
+  def calcular_minima_nota(self):
+    return min(self.calificaciones)
+  
+  
+
+import tkinter as interfaz
+
+# Interfaz
+class InterfazGrafica:
+  def __init__(self):
+    self.ventana_principal = interfaz.Tk()
+    self.ventana_principal.geometry(f"320x450")
+    self.ventana_principal.title(f"Notas")
+    self.ventana_principal.resizable(False, False)
+    self.ventana_principal.grid_columnconfigure(1, weight=1) 
+    self.ventana_principal.grid_columnconfigure(0, weight=0) 
+    self.ventana_principal.grid_columnconfigure(2, weight=0) 
+
+
+
+
+    self.nota_1 = interfaz.Label(self.ventana_principal, text = f"Nota 1:")
+    self.nota_1.grid(row = 0, column = 0, sticky = 'W', padx = (15,0), pady = (10,5))
+    self.nota_2 = interfaz.Label(self.ventana_principal, text = f"Nota 2:")
+    self.nota_2.grid(row = 1, column = 0, sticky = 'W', padx = (15,0), pady = 5)
+    self.nota_3 = interfaz.Label(self.ventana_principal, text = f"Nota 3:")
+    self.nota_3.grid(row = 2, column = 0, sticky = 'W', padx = (15,0), pady = 5)
+    self.nota_4 = interfaz.Label(self.ventana_principal, text = f"Nota 4:")
+    self.nota_4.grid(row = 3, column = 0, sticky = 'W', padx = (15,0), pady = 5)
+    self.nota_5 = interfaz.Label(self.ventana_principal, text = f"Nota 5:")
+    self.nota_5.grid(row = 4, column = 0, sticky = 'W', padx = (15,0), pady = 5)
+
+    self.entry_nota_1 = interfaz.Entry(self.ventana_principal)
+    self.entry_nota_1.grid(row = 0, column = 1, padx = (30, 15), pady = 5)
+
+    self.entry_nota_2 = interfaz.Entry(self.ventana_principal)
+    self.entry_nota_2.grid(row = 1, column = 1, padx = (30, 15), pady = 5)
+
+    self.entry_nota_3 = interfaz.Entry(self.ventana_principal)
+    self.entry_nota_3.grid(row = 2, column = 1, padx = (30, 15), pady = 5)
+
+    self.entry_nota_4 = interfaz.Entry(self.ventana_principal)
+    self.entry_nota_4.grid(row = 3, column = 1, padx = (30, 15), pady = 5)
+
+    self.entry_nota_5 = interfaz.Entry(self.ventana_principal)
+    self.entry_nota_5.grid(row = 4, column = 1, padx = (30, 15), pady = 5)
+
+    self.var_promedio = interfaz.StringVar(value=f"Promedio: 0.0")
+    self.var_sd = interfaz.StringVar(value=f"Desviacion estandar: 0.0")
+    self.var_menor = interfaz.StringVar(value=f"Menor nota: 0.0")
+    self.var_mayor = interfaz.StringVar(value=f"Mayor nota: 0.0")
+    self.var_estado = interfaz.StringVar(value=f"")
+
+    self.texto_promedio = interfaz.Label(self.ventana_principal, textvariable= self.var_promedio, width= '20').grid(row = 7, column = 0, padx = (10,0), pady= (20,5), sticky = 'NS')
+    self.texto_desviacion = interfaz.Label(self.ventana_principal, textvariable = self.var_sd, width= '20').grid(row = 8, column = 0, padx = (10,0), pady= 5, sticky = 'NS')
+    self.texto_menor = interfaz.Label(self.ventana_principal, textvariable = self.var_menor, width= '20').grid(row = 9, column = 0, padx = (10,0), pady= 5, sticky = 'NS')
+    self.texto_mayor = interfaz.Label(self.ventana_principal, textvariable = self.var_mayor, width= '20').grid(row = 10, column = 0, padx = (10,0), pady= 5, sticky = 'NS')
+
+
+
+
+
+    boton_limpiar = interfaz.Button(self.ventana_principal, text = "Limpiar", command = self.limpiar).grid(row = 5, column = 1, padx = (30,15), pady = 5, sticky = 'WE')
+    boton_calcular = interfaz.Button(self.ventana_principal, text = "Calcular", command = self.calcular).grid(row = 6, column = 1, padx = (30,15), pady = 5, sticky = 'WE')
+
+    estado = interfaz.Label(self.ventana_principal, textvariable = self.var_estado)
+    estado.grid(row = 11, column = 0, columnspan = 2, pady = 30)
+
+
+
+  def calcular(self):
+      try:
+          self.nota1 = round(float(self.entry_nota_1.get()), 2)
+          self.nota2 = round(float(self.entry_nota_2.get()), 2)
+          self.nota3 = round(float(self.entry_nota_3.get()), 2)
+          self.nota4 = round(float(self.entry_nota_4.get()), 2)
+          self.nota5 = round(float(self.entry_nota_5.get()), 2)
+          self.lista = [self.nota1, self.nota2, self.nota3, self.nota4, self.nota5]
+      except ValueError:
+        self.var_estado.set(f"Error: complete todos los campos con numeros validos")
+        return
+      
+      for i in self.lista:
+        if i<0 or i>5:
+            self.var_estado.set(f"Error: las notas deben ser entre 0.0 y 5.0")
+            return
+
+
+      notas = Calificaciones(self.nota1, self.nota2, self.nota3, self.nota4, self.nota5)
+      self.var_promedio.set(f"Promedio: {round(notas.calcular_promedio(), 2)}")
+      self.var_sd.set(f"Desviacion Estandar: {round(notas.calcular_desviacion_estandar(), 2)}")
+      self.var_menor.set(f"Menor nota: {round(notas.calcular_minima_nota(), 2)}")
+      self.var_mayor.set(f"Mayor nota: {round(notas.calcular_maxima_nota(), 2)}")
+
+  def limpiar(self):
+      try:
+          self.entry_nota_1.delete(0, 'end')
+          self.entry_nota_2.delete(0, 'end')
+          self.entry_nota_3.delete(0, 'end')
+          self.entry_nota_4.delete(0, 'end')
+          self.entry_nota_5.delete(0, 'end')
+          
+          self.var_promedio.set(f"Promedio: 0.0")
+          self.var_sd.set(f"Desviacion estandar: 0.0")
+          self.var_menor.set(f"Menor nota: 0.0")
+          self.var_mayor.set(f"Mayor nota: 0.0")
+
+          self.var_estado.set(f"Casillas limpiadas exitosamente")
+      except:
+        self.var_estado.set(f"Error al limpiar")
+
+  def run(self):
+     self.ventana_principal.mainloop()
+
+
+app = InterfazGrafica()
+app.run()
