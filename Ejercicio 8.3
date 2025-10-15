@@ -1,0 +1,176 @@
+# Ejercicio 2
+from math import pi
+import tkinter as interfaz
+
+class FiguraGeometrica:
+    def calcular_volumen(self):
+        pass
+    def calcular_superficie(self):
+        pass
+
+class Cilindro(FiguraGeometrica):
+    def __init__(self, radio, altura):
+        self.radio = radio
+        self.altura = altura
+    def calcular_volumen(self):
+        volumen = pi * (self.radio**2) * self.altura
+        return volumen
+    def calcular_superficie(self):
+        superficie = 2 * pi * self.radio * (self.radio + self.altura)
+        return superficie
+    
+
+class Esfera(FiguraGeometrica):
+    def __init__(self, radio):
+        self.radio = radio
+    def calcular_volumen(self):
+        volumen = (4/3)* pi * (self.radio)**3
+        return volumen
+    def calcular_superficie(self):
+        superficie = 4 * pi * (self.radio)**2
+        return superficie
+
+
+class Piramide(FiguraGeometrica):
+    def __init__(self, base, altura, apotema):
+        self.base = base
+        self.altura = altura
+        self.apotema = apotema
+    def calcular_volumen(self):
+        volumen = (1/3) * (self.base**2) * (self.altura)
+        return volumen
+    def calcular_superficie(self):
+        superficie = (self.base**2) + 2 * self.base * self.apotema
+        return superficie
+        
+class Interfaz:
+    def __init__(self):
+        self.ventana_principal = interfaz.Tk()
+        self.ventana_principal.geometry(f"350x200")
+        self.ventana_principal.title(f"Figuras")
+        self.ventana_principal.resizable(False, False)
+        
+
+        # Botones
+        self.frame_botones = interfaz.Frame(self.ventana_principal)
+        self.frame_botones.pack(expand = True)
+
+        self.boton_cilindro = interfaz.Button(self.frame_botones, text = 'Cilindro', command = self.abrir_ventana_cilindro)
+        self.boton_cilindro.grid(row = 0, column = 0, padx = 20, pady = 20, sticky="ew")
+
+        self.boton_esfera = interfaz.Button(self.frame_botones, text = 'Esfera', command = self.abrir_ventana_esfera)
+        self.boton_esfera.grid(row = 0, column = 1, padx = 20, pady = 20, sticky="ew")
+
+        self.boton_piramide = interfaz.Button(self.frame_botones, text = 'Piramide', command = self.abrir_ventana_piramide)
+        self.boton_piramide.grid(row = 0, column = 2, padx = 20, pady = 20, sticky= "ew")
+
+    # Cilindro
+
+    def abrir_ventana_cilindro(self):
+        self.ventana_cilindro = interfaz.Toplevel(self.ventana_principal)
+        self.ventana_cilindro.title(f"Cilindro")
+        self.ventana_cilindro.geometry(f"300x200")
+        self.ventana_cilindro.resizable(False, False)
+
+        self.texto_radio = interfaz.Label(self.ventana_cilindro, text = f"Radio (cms):")
+        self.texto_radio.grid(row = 0, column = 0, padx = 10, pady = 5)
+        self.entrada_radio = interfaz.Entry(self.ventana_cilindro)
+        self.entrada_radio.grid(row = 0, column = 1, padx = 10, pady = 5)
+
+        self.texto_altura = interfaz.Label(self.ventana_cilindro, text = f"Altura (cms):")
+        self.texto_altura.grid(row = 1, column = 0, padx = 10, pady = 5)
+        self.entrada_altura = interfaz.Entry(self.ventana_cilindro)
+        self.entrada_altura.grid(row = 1, column = 1, padx = 10, pady = 5)
+
+        self.ventana_cilindro.columnconfigure(0, minsize=130)
+        self.ventana_cilindro.columnconfigure(1, minsize=130)
+
+        self.boton_calcular_cilindro = interfaz.Button(self.ventana_cilindro, text = f"Calcular", command = self.calculos_boton_cilindro )
+        self.boton_calcular_cilindro.grid(row = 2, column = 1, padx = 10, pady = 5, sticky =  "ew")
+    
+        self.texto_volumen_cilindro = interfaz.Label(self.ventana_cilindro, text = f"Volumen (cm3): 0")
+        self.texto_superficie_cilindro = interfaz.Label(self.ventana_cilindro, text = f"Superficie (cm2): 0")
+
+        self.texto_volumen_cilindro.grid(row = 3, column = 0, columnspan= 2, padx = 10, pady = 5, sticky = "w")
+        self.texto_superficie_cilindro.grid(row = 4, column = 0, padx = 10, columnspan= 2, pady = 5, sticky = "w")
+
+    def calculos_boton_cilindro(self):
+        self.cilindro = Cilindro(radio = float(self.entrada_radio.get()), altura = float(self.entrada_altura.get()))
+        self.texto_volumen_cilindro.config(text = f"Volumen (cm3): {round(self.cilindro.calcular_volumen(), 2)}")
+        self.texto_superficie_cilindro.config(text = f"Superficie (cm2): {round(self.cilindro.calcular_superficie(), 2)}")
+
+    # Esfera
+
+    def abrir_ventana_esfera(self):
+        self.ventana_esfera = interfaz.Toplevel(self.ventana_principal)
+        self.ventana_esfera.title(f"Esfera")
+        self.ventana_esfera.geometry(f"300x200")
+        self.ventana_esfera.resizable(False, False)
+
+        self.texto_radio_esfera = interfaz.Label(self.ventana_esfera, text = f"Radio (cms):")
+        self.texto_radio_esfera.grid(row = 0, column = 0, padx = 10, pady = 5)
+        self.entrada_radio_esfera = interfaz.Entry(self.ventana_esfera)
+        self.entrada_radio_esfera.grid(row = 0, column = 1, padx = 10, pady = 5)
+
+        self.ventana_esfera.columnconfigure(0, minsize=130)
+        self.ventana_esfera.columnconfigure(1, minsize=130)
+
+        self.boton_calcular_esfera = interfaz.Button(self.ventana_esfera, text = f"Calcular", command = self.calculos_boton_esfera )
+        self.boton_calcular_esfera.grid(row = 1, column = 1, padx = 10, pady = 5, sticky =  "ew")
+    
+        self.texto_volumen_esfera = interfaz.Label(self.ventana_esfera, text = f"Volumen (cm3): 0")
+        self.texto_superficie_esfera = interfaz.Label(self.ventana_esfera, text = f"Superficie (cm2): 0")
+
+        self.texto_volumen_esfera.grid(row = 2, column = 0, columnspan= 2, padx = 10, pady = 5, sticky = "w")
+        self.texto_superficie_esfera.grid(row = 3, column = 0, padx = 10, columnspan= 2, pady = 5, sticky = "w")
+
+    def calculos_boton_esfera(self):
+        self.esfera = Esfera(radio = float(self.entrada_radio_esfera.get()))
+        self.texto_volumen_esfera.config(text = f"Volumen (cm3): {round(self.esfera.calcular_volumen(), 2)}")
+        self.texto_superficie_esfera.config(text = f"Superficie (cm2): {round(self.esfera.calcular_superficie(), 2)}")
+
+    # Piramide
+
+    def abrir_ventana_piramide(self):
+        self.ventana_piramide = interfaz.Toplevel(self.ventana_principal)
+        self.ventana_piramide.title(f"Piramide")
+        self.ventana_piramide.geometry(f"300x200")
+        self.ventana_piramide.resizable(False, False)
+
+        self.texto_base_piramide = interfaz.Label(self.ventana_piramide, text = f"base (cms):")
+        self.texto_base_piramide.grid(row = 0, column = 0, padx = 10, pady = 5)
+        self.entrada_base_piramide = interfaz.Entry(self.ventana_piramide)
+        self.entrada_base_piramide.grid(row = 0, column = 1, padx = 10, pady = 5)
+
+        self.texto_altura_piramide = interfaz.Label(self.ventana_piramide, text = f"Altura (cms):")
+        self.texto_altura_piramide.grid(row = 1, column = 0, padx = 10, pady = 5)
+        self.entrada_altura_piramide = interfaz.Entry(self.ventana_piramide)
+        self.entrada_altura_piramide.grid(row = 1, column = 1, padx = 10, pady = 5)
+
+        self.texto_apotema_piramide = interfaz.Label(self.ventana_piramide, text = f"Apotema (cms):")
+        self.texto_apotema_piramide.grid(row = 2, column = 0, padx = 10, pady = 5)
+        self.entrada_apotema_piramide = interfaz.Entry(self.ventana_piramide)
+        self.entrada_apotema_piramide.grid(row = 2, column = 1, padx = 10, pady = 5)
+
+        self.ventana_piramide.columnconfigure(0, minsize=130)  
+        self.ventana_piramide.columnconfigure(1, minsize=130)
+
+        self.boton_calcular_piramide = interfaz.Button(self.ventana_piramide, text = f"Calcular", command = self.calculos_boton_piramide )
+        self.boton_calcular_piramide.grid(row = 3, column = 1, padx = 10, pady = 5, sticky =  "ew")
+    
+        self.texto_volumen_piramide = interfaz.Label(self.ventana_piramide, text = f"Volumen (cm3): 0")
+        self.texto_superficie_piramide = interfaz.Label(self.ventana_piramide, text = f"Superficie (cm2): 0")
+
+        self.texto_volumen_piramide.grid(row = 4, column = 0, columnspan= 2, padx = 10, pady = 5, sticky = "w")
+        self.texto_superficie_piramide.grid(row = 5, column = 0, padx = 10, columnspan= 2, pady = 5, sticky = "w")
+
+    def calculos_boton_piramide(self):
+        self.piramide = Piramide(base = float(self.entrada_base_piramide.get()), altura = float(self.entrada_altura_piramide.get()), apotema = float(self.entrada_apotema_piramide.get()))
+        self.texto_volumen_piramide.config(text = f"Volumen (cm3): {round(self.piramide.calcular_volumen(), 2)}")
+        self.texto_superficie_piramide.config(text = f"Superficie (cm2): {round(self.piramide.calcular_superficie(), 2)}")
+
+
+    def run(self):
+        self.ventana_principal.mainloop()
+app = Interfaz()
+app.run()
